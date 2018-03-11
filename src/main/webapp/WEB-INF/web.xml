@@ -5,9 +5,9 @@
 		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
 		id="WebApp_ID" version="2.5">
 		
-  <display-name>QR_Code_xaxa</display-name>
+  <display-name>QR_Code</display-name>
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>welcome.jsp</welcome-file>
   </welcome-file-list>
 
 	
