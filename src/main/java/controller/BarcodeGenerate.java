@@ -29,7 +29,7 @@ public class BarcodeGenerate extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+			HttpServletResponse response) throws ServletException, IOException{
 		
 		String qrtext = request.getParameter("qrtext");
 		qrcode.setQrtext(qrtext);
@@ -42,9 +42,11 @@ public class BarcodeGenerate extends HttpServlet {
 			out = QrCodeImage.getQRCodeImage(qrtext, 250,250);
 			response.setContentType("image/png");
 			response.setContentLength(out.length);
+//			request.getRequestDispatcher("index.jsp").include(request, response);		
 			
 			OutputStream outStream = response.getOutputStream();
-			
+//			PrintWriter outStream = response.getWriter();
+					
 			outStream.write(out);
 
 			outStream.flush();
