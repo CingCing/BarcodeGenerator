@@ -13,6 +13,7 @@
 	<div class="w-100">
 	<div class="container col-md-10">
   		<form action="generateQRCodeImage" method="get">
+<!--   		<form action="BarcodeGenerate" method="get"> -->
     		<div class="row">
       			<div class="col-md-3" style="margin-top: 6px;">
         			<label >Enter text to create QR Code</label>
@@ -29,10 +30,11 @@
 	<div class="container col-md-2 text-center">
 		<!-- <img src="resources/image/zxc.png" style="width:175px; height:175px"> -->
 		<c:if test="${empty input }">
-			<img src="resources/image/monkas.png" style="width:175px; height:175px">
+			<img src="resources/image/img_avatar.png" style="width:175px; height:175px">
 		</c:if>
 		<c:if test="${not empty input }">
-			<img src="resources/image/${input }.png" style="width:175px; height:175px">
+			<img src="data:image/png;base64,${output }" style="width:175px; height:175px">
+<%-- 			<img src="/BarcodeGenerate?qrtext=${input }" style="width:175px; height:175px"> --%>
 		</c:if>
 	</div>
 </div>
