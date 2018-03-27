@@ -4,11 +4,10 @@ import com.google.zxing.WriterException;
 
 import dao.DBConnect;
 import model.QrCodeComponent;
-import service.QrCodeImage;
+import service.QrcodeService;
 
 import java.io.IOException;
 
-import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.Base64;
 
@@ -36,9 +35,10 @@ public class BarcodeGenerate extends HttpServlet {
 		
 		try {
 			DBConnect.insert(qrtext);
-			byte[] out = QrCodeImage.getQRCodeImage(qrtext, 250,250);
+			byte[] out = QrcodeService.getQRCodeImage(qrtext, 250,250);
 			byte[] encodeBase64 = Base64.getEncoder().encode(out);
 			String base64DataString = new String(encodeBase64 , "UTF-8");
+			
 			request.setAttribute("output", base64DataString);
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		} catch (WriterException e) {

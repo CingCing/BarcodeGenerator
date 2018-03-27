@@ -12,8 +12,7 @@
 <div class="container">
 	<div class="w-100">
 	<div class="container col-md-10">
-  		<form action="BarcodeGenerate" method="get">
-<!--   		<form action="BarcodeGenerate" method="get"> -->
+  		<form action="QrCodeImageOverlay" method="get">
     		<div class="row">
       			<div class="col-md-3" style="margin-top: 6px;">
         			<label >Enter text to create QR Code</label>

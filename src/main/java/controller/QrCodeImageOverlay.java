@@ -1,32 +1,26 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.zxing.WriterException;
 
-import dao.DBConnect;
 import model.QrCodeComponent;
 import service.QrcodeService;
 
 /**
- * Servlet implementation class GenerateQRCodeImageStoredInFile
+ * Servlet implementation class QrCodeImageOverlay
  */
-@WebServlet("/GenerateQRCodeImageStoredInFile")
-public class GenerateQRCodeImageStoredInFile extends HttpServlet {
+public class QrCodeImageOverlay extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
 	QrCodeComponent qrcode = new QrCodeComponent();
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GenerateQRCodeImageStoredInFile() {
+    public QrCodeImageOverlay() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,24 +30,19 @@ public class GenerateQRCodeImageStoredInFile extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
 		String qrtext = request.getParameter("qrtext");
 		qrcode.setQrtext(qrtext);
-		String image_path = "./src/main/webapp/resources/image/" + qrtext + ".png";
-		request.setAttribute("input", qrtext);
-		
+		String filePath = "./src/main/webapp/resources/image/";
+		String Logo = "./src/main/webapp/resources/image/image.png";
 		try {
-			DBConnect.insert(qrtext);
-			QrcodeService.generateQRCodeImage(qrtext, 175, 175, image_path);
-			
+			QrcodeService.generateQRCodeImageOverlay(qrtext, 175, 175, filePath, Logo);
+			request.setAttribute("input", qrtext);
 			request.getRequestDispatcher("welcome.jsp").forward(request, response);
 		} catch (WriterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		
 	}
 
 	/**
