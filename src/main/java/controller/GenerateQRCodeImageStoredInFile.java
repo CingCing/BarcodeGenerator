@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.Base64;
 
 import javax.servlet.ServletException;
@@ -12,21 +13,22 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.zxing.WriterException;
 
+import dao.DBConnect;
 import model.QrCodeComponent;
 import service.QrCodeImage;
 
 /**
- * Servlet implementation class generateQRCodeImage
+ * Servlet implementation class GenerateQRCodeImageStoredInFile
  */
-@WebServlet("/generateQRCodeImage")
-public class generateQRCodeImage extends HttpServlet {
+@WebServlet("/GenerateQRCodeImageStoredInFile")
+public class GenerateQRCodeImageStoredInFile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	QrCodeComponent qrcode = new QrCodeComponent();
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public generateQRCodeImage() {
+    public GenerateQRCodeImageStoredInFile() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,23 +38,24 @@ public class generateQRCodeImage extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html");
-//		PrintWriter out = response.getWriter();
 		
 		String qrtext = request.getParameter("qrtext");
 		qrcode.setQrtext(qrtext);
-//		String text = qrcode.getQrtext();
-//		String image_path = "./src/main/webapp/resources/image/" + text + ".png";
+		String image_path = "./src/main/webapp/resources/image/" + qrtext + ".png";
 		request.setAttribute("input", qrtext);
 		
 		try {
-//			QrCodeImage.generateQRCodeImage(text, 175, 175, image_path);
-			byte[] out = QrCodeImage.getQRCodeImage(qrtext, 250,250);
-			byte[] encodeBase64 = Base64.getEncoder().encode(out);
-			String base64DataString = new String(encodeBase64 , "UTF-8");
-			request.setAttribute("output", base64DataString);
+			DBConnect.insert(qrtext);
+			QrCodeImage.generateQRCodeImage(qrtext, 175, 175, image_path);
+//			byte[] out = QrCodeImage.getQRCodeImage(qrtext, 250,250);
+//			byte[] encodeBase64 = Base64.getEncoder().encode(out);
+//			String base64DataString = new String(encodeBase64 , "UTF-8");
+//			request.setAttribute("output", base64DataString);
 			request.getRequestDispatcher("welcome.jsp").forward(request, response);
 		} catch (WriterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
