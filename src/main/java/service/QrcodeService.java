@@ -109,8 +109,11 @@ public class QrcodeService {
         BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix, getMatrixConfig());
         
         // Load logo image
-        BufferedImage overly = getOverlay(Logo);       
-        
+        BufferedImage overly = getOverlay(Logo);      
+        //resize image if its big
+        if(overly.getHeight() > 100 || overly.getWidth() >100) {
+        	overly = resizeImage(overly);
+        }
         // Calculate the delta height and width between QR code and logo
         int deltaHeight = qrImage.getHeight() - overly.getHeight();
         int deltaWidth = qrImage.getWidth() - overly.getWidth();
@@ -137,18 +140,36 @@ public class QrcodeService {
         
         return pngData;
     }
+	
 	private static BufferedImage getOverlay(String logoPath) throws IOException {
 		File path = new File(logoPath);
         return ImageIO.read(path);
     }
 	
+	 private static BufferedImage resizeImage(BufferedImage originalImage){
+			BufferedImage resizedImage = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = resizedImage.createGraphics();
+			g.drawImage(originalImage, 0, 0, 64, 64, null);
+			g.dispose();				
+			return resizedImage;
+	 }
+	
 	private static MatrixToImageConfig getMatrixConfig() {
         // ARGB Colors
         // Check Colors ENUM
-        return new MatrixToImageConfig(QrcodeService.Colors.WHITE.getArgb(), QrcodeService.Colors.ORANGE.getArgb());
+        return new MatrixToImageConfig(QrcodeService.Colors.BLACK.getArgb(), QrcodeService.Colors.WHITE.getArgb());
     }
 	
 	public enum Colors {
+		/*
+		 * int argb values
+		 * blue:-12535088
+		 * red:-1500093
+		 * purple:-7712866
+		 * orange:-741059
+		 * white:-1
+		 * BLACK:-16777216
+		 * */
 		
         BLUE(0xFF40BAD0),
         RED(0xFFE91C43),
