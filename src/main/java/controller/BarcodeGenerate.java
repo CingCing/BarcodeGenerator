@@ -4,12 +4,12 @@ import com.google.zxing.WriterException;
 
 import dao.DBConnect;
 import model.QrCodeComponent;
-import service.QrCodeImage;
+import service.QrcodeService;
 
 import java.io.IOException;
 
-import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.Base64;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,8 +24,6 @@ public class BarcodeGenerate extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	QrCodeComponent qrcode = new QrCodeComponent();
-	
-	
 
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -33,24 +31,16 @@ public class BarcodeGenerate extends HttpServlet {
 		
 		String qrtext = request.getParameter("qrtext");
 		qrcode.setQrtext(qrtext);
-		String text = qrcode.getQrtext();
-		System.out.println("xaxa: " + text);
+		request.setAttribute("input", qrtext);
 		
-		byte[] out;
 		try {
-			DBConnect.insert(text);
-			out = QrCodeImage.getQRCodeImage(qrtext, 250,250);
-			response.setContentType("image/png");
-			response.setContentLength(out.length);
-//			request.getRequestDispatcher("index.jsp").include(request, response);		
+			DBConnect.insert(qrtext);
+			byte[] out = QrcodeService.getQRCodeImage(qrtext, 250,250);
+			byte[] encodeBase64 = Base64.getEncoder().encode(out);
+			String base64DataString = new String(encodeBase64 , "UTF-8");
 			
-			OutputStream outStream = response.getOutputStream();
-//			PrintWriter outStream = response.getWriter();
-					
-			outStream.write(out);
-
-			outStream.flush();
-			outStream.close();
+			request.setAttribute("output", base64DataString);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
 		} catch (WriterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -6,9 +6,36 @@
 		id="WebApp_ID" version="2.5">
 		
   <display-name>QR_Code</display-name>
-  <welcome-file-list>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>QrCodeImageOverlay</display-name>
+  	<servlet-name>QrCodeImageOverlay</servlet-name>
+  	<servlet-class>controller.QrCodeImageOverlay</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>QrCodeImageOverlayWeb</display-name>
+  	<servlet-name>QrCodeImageOverlayWeb</servlet-name>
+  	<servlet-class>controller.QrCodeImageOverlayWeb</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>QrCodeImageOverlay</servlet-name>
+  	<url-pattern>/QrCodeImageOverlay</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>QrCodeImageOverlayWeb</servlet-name>
+  	<url-pattern>/QrCodeImageOverlayWeb</url-pattern>
+  </servlet-mapping>
+  <!-- <welcome-file-list>
     <welcome-file>welcome.jsp</welcome-file>
+  </welcome-file-list> -->
+  
+    <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  
 
 	
 </web-app>
